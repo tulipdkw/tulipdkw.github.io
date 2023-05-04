@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Acwing.3451题解</title>
+    <url>/2023/04/27/acwing_4351/</url>
+    <content><![CDATA[<h3 id="题目：3451-字符串排序II"><a href="#题目：3451-字符串排序II" class="headerlink" title="题目：3451.字符串排序II"></a>题目：3451.字符串排序II</h3><p>编写一个程序，将输入字符串中的字符按如下规则排序。</p>
+<ul>
+<li>规则 1：英文字母从 <strong>A</strong> 到 <strong>Z</strong> 排列，不区分大小写。如，输入：<code>Type</code> 输出：<code>epTy</code>。</li>
+<li>规则 2：同一个英文字母的大小写同时存在时，按照输入顺序排列。如，输入：<code>BabA</code> 输出：<code>aABb</code>。</li>
+<li>规则 3：非英文字母的其它字符保持原来的位置。如，输入：<code>By?e</code> 输出：<code>Be?y</code>。</li>
+</ul>
+<h4 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h4><p>输入包含多组测试数据。</p>
+<p>每组数据占一行，包含一个字符串。</p>
+<h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>每组数据输出一行结果，为按要求排序后的字符串。</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>字符串长度不超过 10001000，<br>每个输入最多包含 100100 组数据。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A Famous Saying: Much Ado About Nothing (2012/8).</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A aaAAbc dFgghh: iimM nNn oooos Sttuuuy (2012/8).</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h3><p>本题为排序问题</p>
+<p>根据题目要求，我们可以将字符分为两种：</p>
+<ul>
+<li>大/小写字母</li>
+<li>其他字符（包括空格）</li>
+</ul>
+<p><strong>对于大/小写字母：</strong></p>
+<blockquote>
+<p>由于题目要求目标字符串中，英文字母按字典序升序排列，即：</p>
+<p>str = (a|A)*(b|B)*$\cdots$*(z|Z)*    (正则表达式)</p>
+<p>所以，我们可以使用26个队列容器，分别对应(a|A)* ~ (z|Z)*，最终输出时上一个队列空了再输出下一个；而而在队列内部，由于规则2，则按照输入时的顺序存放即可。</p>
+</blockquote>
+<p><strong>对于其他字符：</strong></p>
+<blockquote>
+<p>由规则3得，每个非英文字母保持在它原来的位置</p>
+<p>因此，我们可以使用一个和字符串长度相等的char型数组，下标为特殊字符再字符串中的位置，元素为特殊字符的值，而英文字母对应的下标处的元素值为’\0’（ASCII码为0）。</p>
+<p>在输出时，先判断是否为其他字符，若是则直接输出char[i]并continue</p>
+</blockquote>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p><code>C++</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1010</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> special[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isLowerLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isCapitalLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;Z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    string str;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(cin, str)) &#123;</span><br><span class="line">        queue&lt;<span class="type">char</span>&gt; letters[<span class="number">26</span>];</span><br><span class="line">        <span class="built_in">memset</span>(special, <span class="number">0</span>, <span class="built_in">sizeof</span>(special));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="type">char</span> c = str[i];</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">isLowerLetter</span>(c)) &#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;a&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">isCapitalLetter</span>(c))&#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;A&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                special[i] = c;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> point = <span class="number">0</span>;  <span class="comment">//指向letters;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(special[i] != <span class="string">&#x27;\0&#x27;</span>) <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, special[i]);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">while</span>(letters[point].<span class="built_in">empty</span>()) point ++;</span><br><span class="line">                <span class="type">char</span> c = letters[point].<span class="built_in">front</span>();</span><br><span class="line">                letters[point].<span class="built_in">pop</span>();</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>AcWing</tag>
+        <tag>算法</tag>
+        <tag>北大机试真题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>githubio_to_self_domain</title>
+    <url>/2023/04/28/githubio-to-self-domain/</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+      <tags>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/04/30/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+</search>
