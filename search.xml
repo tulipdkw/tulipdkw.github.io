@@ -56,8 +56,8 @@
 </ol>
 <h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h4 id="指数和原根"><a href="#指数和原根" class="headerlink" title="指数和原根"></a>指数和原根</h4><p>设 $m &gt; 1$ 是整数，$a$ 是与 $m$ 互素的正整数，根据<code>欧拉定理</code>，有 $a^{\varphi(m)}\equiv1(mod\ m)$ </p>
 <p>其中$\varphi(m)$（Eular函数）表示从1到 $m-1$ 中与 $m$ 互素的数的个数</p>
-<p>而使得 $a^e \equiv 1(mod \ m)$ 成立的最小正整数 $e$ ，叫做 ==$a\ 对模\ m\ 的指数$==</p>
-<p>如果这个时候，恰好有 $e = \varphi(m)$，那么称 $a$ 为==模 $m$ 的原根==</p>
+<p>而使得 $a^e \equiv 1(mod \ m)$ 成立的最小正整数 $e$ ，叫做 <mark class="hl-label pink">a对模m的指数</mark> </p>
+<p>如果这个时候，恰好有 $e = \varphi(m)$，那么称 $a$ 为<mark class="hl-label pink">模m的原根</mark> </p>
 <p><strong><em>谁要看定义啊喂</em></strong></p>
 <p>咳咳，其实简单来说就是</p>
 <p><strong>当 $a^{\varphi(m)}\equiv1(mod\ m)$ ，且没有更小的数 $e$ 能使得 $a^e \equiv 1(mod\ m)$时，$a$ 就是模 $m$ 原根</strong></p>
