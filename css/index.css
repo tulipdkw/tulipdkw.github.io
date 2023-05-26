@@ -1405,11 +1405,11 @@ input::placeholder {
   z-index: -999;
   width: 100%;
   height: 100%;
-  background: -webkit-linear-gradient(30deg, #dddddd, #FDDBDE, #dddddd, #BCEEE5, #dddddd, #FFDCB0, #dddddd, #B0DCFF, #dddddd, #FFDCB0, #dddddd, #BCEEE5, #dddddd, #FDDBDE, #dddddd);
-  background: -moz-linear-gradient(30deg, #dddddd, #FDDBDE, #dddddd, #BCEEE5, #dddddd, #FFDCB0, #dddddd, #B0DCFF, #dddddd, #FFDCB0, #dddddd, #BCEEE5, #dddddd, #FDDBDE, #dddddd);
-  background: -o-linear-gradient(30deg, #dddddd, #FDDBDE, #dddddd, #BCEEE5, #dddddd, #FFDCB0, #dddddd, #B0DCFF, #dddddd, #FFDCB0, #dddddd, #BCEEE5, #dddddd, #FDDBDE, #dddddd);
-  background: -ms-linear-gradient(30deg, #dddddd, #FDDBDE, #dddddd, #BCEEE5, #dddddd, #FFDCB0, #dddddd, #B0DCFF, #dddddd, #FFDCB0, #dddddd, #BCEEE5, #dddddd, #FDDBDE, #dddddd);
-  background: linear-gradient(60deg, #dddddd, #FDDBDE, #dddddd, #BCEEE5, #dddddd, #FFDCB0, #dddddd, #B0DCFF, #dddddd, #FFDCB0, #dddddd, #BCEEE5, #dddddd, #FDDBDE, #dddddd);
+  background: -webkit-linear-gradient(53deg, #FDDBDE, #B0DCFF, #FDDBDE, #B0DCFF, #FDDBDE);
+  background: -moz-linear-gradient(53deg, #FDDBDE, #B0DCFF, #FDDBDE, #B0DCFF, #FDDBDE);
+  background: -o-linear-gradient(53deg, #FDDBDE, #B0DCFF, #FDDBDE, #B0DCFF, #FDDBDE);
+  background: -ms-linear-gradient(53deg, #FDDBDE, #B0DCFF, #FDDBDE, #B0DCFF, #FDDBDE);
+  background: linear-gradient(37deg, #FDDBDE, #B0DCFF, #FDDBDE, #B0DCFF, #FDDBDE);
   background-attachment: local;
   background-position: center;
   background-size: cover;
