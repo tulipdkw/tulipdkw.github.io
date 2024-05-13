@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>WHU网安22-23学年编译原理真题</title>
+    <url>/2024/05/13/WHU%E7%BD%91%E5%AE%8922-23%E5%AD%A6%E5%B9%B4%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E7%9C%9F%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="前言">前言</h2>
+<p>自你武网安脱离计院以来，某些课程的期末考试往年卷就像机密文件一样，从在不官方公开，《编译原理》这门课正是如此。</p>
+<p>考前，老师通常会发两张计算机学院的往年卷，表示==咱的考试题型虽然和计院不一样，但涉及的知识点都是那些==。话虽然确实是这么说的，但仍会给学生们带来不安感。</p>
+<p>在2023年6月15日的下午，笔者在《编译原理》的考试中花了一个小时出头做完了试卷（<code>获得了96分的好成绩/doge</code>）。看着手边的试卷和可以带走的草稿纸（<em>因为是半开卷，可以带一张纸进来</em>），觉得闲着也是闲着，不如抄一份试卷原题，如果能造福后人也是一桩美事。</p>
+<img src="https://cdn.jsdelivr.net/gh/tulipdkw/orekidkw.cdn.img/img/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86.JPG" style="zoom:67%;" />
+<h2 id="第一题">第一题</h2>
+]]></content>
+      <tags>
+        <tag>编译原理</tag>
+        <tag>真题</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Acwing.3451题解</title>
     <url>/2023/04/27/acwing_4351/</url>
     <content><![CDATA[<h3 id="题目：3451-字符串排序II">题目：3451.字符串排序II</h3>
