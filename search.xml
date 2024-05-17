@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Acwing.3451题解</title>
-    <url>/2023/04/27/acwing_4351/</url>
-    <content><![CDATA[<h3 id="题目：3451-字符串排序II">题目：3451.字符串排序II</h3>
-<p>编写一个程序，将输入字符串中的字符按如下规则排序。</p>
-<ul>
-<li>规则 1：英文字母从 <strong>A</strong> 到 <strong>Z</strong> 排列，不区分大小写。如，输入：<code>Type</code> 输出：<code>epTy</code>。</li>
-<li>规则 2：同一个英文字母的大小写同时存在时，按照输入顺序排列。如，输入：<code>BabA</code> 输出：<code>aABb</code>。</li>
-<li>规则 3：非英文字母的其它字符保持原来的位置。如，输入：<code>By?e</code> 输出：<code>Be?y</code>。</li>
-</ul>
-<h4 id="输入格式">输入格式</h4>
-<p>输入包含多组测试数据。</p>
-<p>每组数据占一行，包含一个字符串。</p>
-<h4 id="输出格式">输出格式</h4>
-<p>每组数据输出一行结果，为按要求排序后的字符串。</p>
-<h4 id="数据范围">数据范围</h4>
-<p>字符串长度不超过 10001000，<br>
-每个输入最多包含 100100 组数据。</p>
-<h4 id="输入样例：">输入样例：</h4>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A Famous Saying: Much Ado About Nothing (2012/8).</span><br></pre></td></tr></table></figure>
-<h4 id="输出样例：">输出样例：</h4>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A aaAAbc dFgghh: iimM nNn oooos Sttuuuy (2012/8).</span><br></pre></td></tr></table></figure>
-<h3 id="算法思路">算法思路</h3>
-<p>本题为排序问题</p>
-<p>根据题目要求，我们可以将字符分为两种：</p>
-<ul>
-<li>大/小写字母</li>
-<li>其他字符（包括空格）</li>
-</ul>
-<p><strong>对于大/小写字母：</strong></p>
-<blockquote>
-<p>由于题目要求目标字符串中，英文字母按字典序升序排列，即：</p>
-<p>str = (a|A)*(b|B)*<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋯</mo></mrow><annotation encoding="application/x-tex">\cdots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.313em;"></span><span class="minner">⋯</span></span></span></span>*(z|Z)*	(正则表达式)</p>
-<p>所以，我们可以使用26个队列容器，分别对应(a|A)* ~ (z|Z)*，最终输出时上一个队列空了再输出下一个；而而在队列内部，由于规则2，则按照输入时的顺序存放即可。</p>
-</blockquote>
-<p><strong>对于其他字符：</strong></p>
-<blockquote>
-<p>由规则3得，每个非英文字母保持在它原来的位置</p>
-<p>因此，我们可以使用一个和字符串长度相等的char型数组，下标为特殊字符再字符串中的位置，元素为特殊字符的值，而英文字母对应的下标处的元素值为’\0’（ASCII码为0）。</p>
-<p>在输出时，先判断是否为其他字符，若是则直接输出char[i]并continue</p>
-</blockquote>
-<h3 id="代码示例">代码示例</h3>
-<p><code>C++</code></p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1010</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> special[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isLowerLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isCapitalLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;Z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    string str;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(cin, str)) &#123;</span><br><span class="line">        queue&lt;<span class="type">char</span>&gt; letters[<span class="number">26</span>];</span><br><span class="line">        <span class="built_in">memset</span>(special, <span class="number">0</span>, <span class="built_in">sizeof</span>(special));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="type">char</span> c = str[i];</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">isLowerLetter</span>(c)) &#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;a&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">isCapitalLetter</span>(c))&#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;A&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                special[i] = c;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> point = <span class="number">0</span>;  <span class="comment">//指向letters;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(special[i] != <span class="string">&#x27;\0&#x27;</span>) <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, special[i]);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">while</span>(letters[point].<span class="built_in">empty</span>()) point ++;</span><br><span class="line">                <span class="type">char</span> c = letters[point].<span class="built_in">front</span>();</span><br><span class="line">                letters[point].<span class="built_in">pop</span>();</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>AcWing</tag>
-        <tag>算法</tag>
-        <tag>北大机试真题</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>WHU网安22-23学年编译原理真题</title>
     <url>/2024/05/13/WHU%E7%BD%91%E5%AE%8922-23%E5%AD%A6%E5%B9%B4%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86%E7%9C%9F%E9%A2%98/</url>
     <content><![CDATA[<h2 id="前言">前言</h2>
@@ -129,7 +78,7 @@ s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
 M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4022em;"><span></span></span></span></span></span></span></span></span>​’为右结合</p>
 </blockquote>
-<p>第五题</p>
+<h3 id="第五题">第五题</h3>
 <blockquote>
 <p><code>自动机的大图题</code>,有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">I_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ~ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>7</mn></msub></mrow><annotation encoding="application/x-tex">I_7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
 <p>增广文法G(E’)如下：<br>
@@ -187,6 +136,16 @@ s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
 c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
 M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2397em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>”的分析过程（表）</p>
 </blockquote>
+<p><code>后面两题都没记，但是和计算机学院的相同题型的问法一模一样，在此仅列出知识点</code></p>
+<h3 id="第六题">第六题</h3>
+<blockquote>
+<p>(1) 语法制导定义 SDD<br>
+(2) 附注语法树</p>
+</blockquote>
+<h3 id="第七题">第七题</h3>
+<blockquote>
+<p>Pascal程序填三地址码</p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>编译原理</tag>
@@ -194,22 +153,54 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
       </tags>
   </entry>
   <entry>
-    <title>单调队列算法</title>
-    <url>/2023/05/13/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/</url>
-    <content><![CDATA[<h3 id="题目">题目</h3>
-<p>对于一个长度为 n 的数组，有长度为 m(m ≤ n)的滑动窗口，要求滑动到每一个点时，窗口区域内的最（大/小）值。</p>
-<h3 id="解题">解题</h3>
-<p>如果使用暴力，在每一段之内求max，那么时间复杂度为O(m*n)</p>
-<p>而使用单调队列算法，可以在O(n)内解决该问题</p>
-<h3 id="数据结构">数据结构</h3>
-<p>算法维护了一个下标对应的元素单调增减的队列（是的，q里存的是数组下标）</p>
-<p>求最小值时要求单调递增；求最大值时则要求单调递减（是不是有点反直觉）</p>
-<p>核心思想（我理解的）是判断元素是否有成为最值的潜力</p>
-<p>以上题目的解题代码和注释如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 读取 数组长度n 窗口长度k</span></span><br><span class="line">    n, k = <span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split())</span><br><span class="line">    <span class="comment"># 读取 输入的数组啊</span></span><br><span class="line">    a = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下面我们先来求最小值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 维护一个单调队列</span></span><br><span class="line">    q = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">    <span class="comment"># 初始状态t是-1，后面会&gt;=h，入队列是从尾部tt入</span></span><br><span class="line">    hh, tt = <span class="number">0</span>, -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="comment"># 窗口开始滑</span></span><br><span class="line">        <span class="comment"># 如果窗口的头部滑走了，队列的首元素不再包含在窗口中，那么出队列</span></span><br><span class="line">        <span class="keyword">if</span> hh &lt;= tt <span class="keyword">and</span> q[hh] &lt; i - k + <span class="number">1</span>:</span><br><span class="line">            hh += <span class="number">1</span></span><br><span class="line">        <span class="comment"># 接下来开始考虑，滑动窗口中纳入的这个新元素，和队列中的老元素的关系</span></span><br><span class="line">        <span class="comment"># 例如，我们现在在求最小值，那么如果新元素更小，那么老元素就“没有在未来成为最小值的潜力”</span></span><br><span class="line">        <span class="comment"># 因此我们需要把老元素排出队列</span></span><br><span class="line">        <span class="keyword">while</span> hh &lt;= tt <span class="keyword">and</span> a[q[tt]] &gt;= a[i]:</span><br><span class="line">            tt -= <span class="number">1</span></span><br><span class="line">        <span class="comment"># 窗口纳入的这个新元素，在这一轮一定是被认为有潜力的（老的都走光了他就上位了）</span></span><br><span class="line">        <span class="comment"># 所以他一定入队列</span></span><br><span class="line">        tt += <span class="number">1</span></span><br><span class="line">        q[tt] = i</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 因为从i=k-1开始，窗口大小才正式进入数组中，从此开始我们取最值</span></span><br><span class="line">        <span class="comment"># 最值就是我们的队首元素（单调递增嘛）</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= k - <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(a[q[hh]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下面用同样的方式求最大值</span></span><br><span class="line">    hh, tt = <span class="number">0</span>, -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> hh &lt;= tt <span class="keyword">and</span> q[hh] &lt; i - k + <span class="number">1</span>:</span><br><span class="line">            hh += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> hh &lt;= tt <span class="keyword">and</span> a[q[tt]] &lt;= a[i]:</span><br><span class="line">            tt -= <span class="number">1</span></span><br><span class="line">        tt += <span class="number">1</span></span><br><span class="line">        q[tt] = i</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i &gt;= k - <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(a[q[hh]])</span><br></pre></td></tr></table></figure>
+    <title>Acwing.3451题解</title>
+    <url>/2023/04/27/acwing_4351/</url>
+    <content><![CDATA[<h3 id="题目：3451-字符串排序II">题目：3451.字符串排序II</h3>
+<p>编写一个程序，将输入字符串中的字符按如下规则排序。</p>
+<ul>
+<li>规则 1：英文字母从 <strong>A</strong> 到 <strong>Z</strong> 排列，不区分大小写。如，输入：<code>Type</code> 输出：<code>epTy</code>。</li>
+<li>规则 2：同一个英文字母的大小写同时存在时，按照输入顺序排列。如，输入：<code>BabA</code> 输出：<code>aABb</code>。</li>
+<li>规则 3：非英文字母的其它字符保持原来的位置。如，输入：<code>By?e</code> 输出：<code>Be?y</code>。</li>
+</ul>
+<h4 id="输入格式">输入格式</h4>
+<p>输入包含多组测试数据。</p>
+<p>每组数据占一行，包含一个字符串。</p>
+<h4 id="输出格式">输出格式</h4>
+<p>每组数据输出一行结果，为按要求排序后的字符串。</p>
+<h4 id="数据范围">数据范围</h4>
+<p>字符串长度不超过 10001000，<br>
+每个输入最多包含 100100 组数据。</p>
+<h4 id="输入样例：">输入样例：</h4>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A Famous Saying: Much Ado About Nothing (2012/8).</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例：">输出样例：</h4>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A aaAAbc dFgghh: iimM nNn oooos Sttuuuy (2012/8).</span><br></pre></td></tr></table></figure>
+<h3 id="算法思路">算法思路</h3>
+<p>本题为排序问题</p>
+<p>根据题目要求，我们可以将字符分为两种：</p>
+<ul>
+<li>大/小写字母</li>
+<li>其他字符（包括空格）</li>
+</ul>
+<p><strong>对于大/小写字母：</strong></p>
+<blockquote>
+<p>由于题目要求目标字符串中，英文字母按字典序升序排列，即：</p>
+<p>str = (a|A)*(b|B)*<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋯</mo></mrow><annotation encoding="application/x-tex">\cdots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.313em;"></span><span class="minner">⋯</span></span></span></span>*(z|Z)*	(正则表达式)</p>
+<p>所以，我们可以使用26个队列容器，分别对应(a|A)* ~ (z|Z)*，最终输出时上一个队列空了再输出下一个；而而在队列内部，由于规则2，则按照输入时的顺序存放即可。</p>
+</blockquote>
+<p><strong>对于其他字符：</strong></p>
+<blockquote>
+<p>由规则3得，每个非英文字母保持在它原来的位置</p>
+<p>因此，我们可以使用一个和字符串长度相等的char型数组，下标为特殊字符再字符串中的位置，元素为特殊字符的值，而英文字母对应的下标处的元素值为’\0’（ASCII码为0）。</p>
+<p>在输出时，先判断是否为其他字符，若是则直接输出char[i]并continue</p>
+</blockquote>
+<h3 id="代码示例">代码示例</h3>
+<p><code>C++</code></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1010</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> special[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isLowerLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isCapitalLetter</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;Z&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    string str;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(cin, str)) &#123;</span><br><span class="line">        queue&lt;<span class="type">char</span>&gt; letters[<span class="number">26</span>];</span><br><span class="line">        <span class="built_in">memset</span>(special, <span class="number">0</span>, <span class="built_in">sizeof</span>(special));</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="type">char</span> c = str[i];</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">isLowerLetter</span>(c)) &#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;a&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">isCapitalLetter</span>(c))&#123;</span><br><span class="line">                letters[c - <span class="string">&#x27;A&#x27;</span>].<span class="built_in">push</span>(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                special[i] = c;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> point = <span class="number">0</span>;  <span class="comment">//指向letters;</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">length</span>(); i ++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(special[i] != <span class="string">&#x27;\0&#x27;</span>) <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, special[i]);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">while</span>(letters[point].<span class="built_in">empty</span>()) point ++;</span><br><span class="line">                <span class="type">char</span> c = letters[point].<span class="built_in">front</span>();</span><br><span class="line">                letters[point].<span class="built_in">pop</span>();</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>, c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
+        <tag>AcWing</tag>
         <tag>算法</tag>
+        <tag>北大机试真题</tag>
       </tags>
   </entry>
   <entry>
@@ -298,6 +289,25 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
 ]]></content>
       <tags>
         <tag>信息安全数学基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单调队列算法</title>
+    <url>/2023/05/13/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h3 id="题目">题目</h3>
+<p>对于一个长度为 n 的数组，有长度为 m(m ≤ n)的滑动窗口，要求滑动到每一个点时，窗口区域内的最（大/小）值。</p>
+<h3 id="解题">解题</h3>
+<p>如果使用暴力，在每一段之内求max，那么时间复杂度为O(m*n)</p>
+<p>而使用单调队列算法，可以在O(n)内解决该问题</p>
+<h3 id="数据结构">数据结构</h3>
+<p>算法维护了一个下标对应的元素单调增减的队列（是的，q里存的是数组下标）</p>
+<p>求最小值时要求单调递增；求最大值时则要求单调递减（是不是有点反直觉）</p>
+<p>核心思想（我理解的）是判断元素是否有成为最值的潜力</p>
+<p>以上题目的解题代码和注释如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 读取 数组长度n 窗口长度k</span></span><br><span class="line">    n, k = <span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split())</span><br><span class="line">    <span class="comment"># 读取 输入的数组啊</span></span><br><span class="line">    a = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下面我们先来求最小值</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 维护一个单调队列</span></span><br><span class="line">    q = [<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">    <span class="comment"># 初始状态t是-1，后面会&gt;=h，入队列是从尾部tt入</span></span><br><span class="line">    hh, tt = <span class="number">0</span>, -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="comment"># 窗口开始滑</span></span><br><span class="line">        <span class="comment"># 如果窗口的头部滑走了，队列的首元素不再包含在窗口中，那么出队列</span></span><br><span class="line">        <span class="keyword">if</span> hh &lt;= tt <span class="keyword">and</span> q[hh] &lt; i - k + <span class="number">1</span>:</span><br><span class="line">            hh += <span class="number">1</span></span><br><span class="line">        <span class="comment"># 接下来开始考虑，滑动窗口中纳入的这个新元素，和队列中的老元素的关系</span></span><br><span class="line">        <span class="comment"># 例如，我们现在在求最小值，那么如果新元素更小，那么老元素就“没有在未来成为最小值的潜力”</span></span><br><span class="line">        <span class="comment"># 因此我们需要把老元素排出队列</span></span><br><span class="line">        <span class="keyword">while</span> hh &lt;= tt <span class="keyword">and</span> a[q[tt]] &gt;= a[i]:</span><br><span class="line">            tt -= <span class="number">1</span></span><br><span class="line">        <span class="comment"># 窗口纳入的这个新元素，在这一轮一定是被认为有潜力的（老的都走光了他就上位了）</span></span><br><span class="line">        <span class="comment"># 所以他一定入队列</span></span><br><span class="line">        tt += <span class="number">1</span></span><br><span class="line">        q[tt] = i</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 因为从i=k-1开始，窗口大小才正式进入数组中，从此开始我们取最值</span></span><br><span class="line">        <span class="comment"># 最值就是我们的队首元素（单调递增嘛）</span></span><br><span class="line">        <span class="keyword">if</span> i &gt;= k - <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(a[q[hh]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下面用同样的方式求最大值</span></span><br><span class="line">    hh, tt = <span class="number">0</span>, -<span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> hh &lt;= tt <span class="keyword">and</span> q[hh] &lt; i - k + <span class="number">1</span>:</span><br><span class="line">            hh += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> hh &lt;= tt <span class="keyword">and</span> a[q[tt]] &lt;= a[i]:</span><br><span class="line">            tt -= <span class="number">1</span></span><br><span class="line">        tt += <span class="number">1</span></span><br><span class="line">        q[tt] = i</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i &gt;= k - <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(a[q[hh]])</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
 </search>
